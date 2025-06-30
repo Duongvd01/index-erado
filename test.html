@@ -1,0 +1,1284 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ERADO - Giải pháp Quản lý Hiệu Thuốc</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        margin: 0;
+        padding: 0;
+        background: #1a202c;
+        color: #fff;
+        overflow: hidden;
+      }
+      .fullpage-container {
+        position: relative;
+        height: 100vh;
+        width: 100%;
+        transition: transform 0.8s ease-in-out;
+      }
+      .fullpage-section {
+        width: 100%;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-sizing: border-box;
+        overflow-y: hidden;
+        position: relative;
+      }
+      .feature-card {
+        background-color: rgba(255, 255, 255, 0.15);
+        padding: 2.5rem;
+        border-radius: 1.5rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3), 0 1px 3px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        color: #fff;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .feature-card:hover {
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.4), 0 4px 6px rgba(0, 0, 0, 0.3);
+        transform: translateY(-0.5rem);
+      }
+      .section-title {
+        font-size: 2.25rem;
+        font-weight: 800;
+        color: #fff;
+        margin-bottom: 2rem;
+        text-align: center;
+        position: relative;
+        text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+        background-color: rgba(26, 32, 44, 0.7);
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+      }
+      .section-title span {
+        display: block;
+        margin-top: 0.5rem;
+        color: #fff;
+        text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+      }
+      @media (max-width: 768px) {
+        .section-title {
+          font-size: 2rem;
+        }
+        .feature-card {
+          padding: 1.5rem;
+        }
+        .feature-card h3 {
+          font-size: 1.75rem;
+        }
+        .feature-card p {
+          font-size: 1rem;
+        }
+      }
+      .fade-in {
+        animation: fadeIn 1s ease-in-out;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      #hero {
+        position: relative;
+        text-align: center;
+      }
+      #hero .container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        padding: 0 1rem;
+        position: relative;
+        z-index: 10;
+      }
+      @media (max-width: 768px) {
+        #hero h2 {
+          font-size: 2.5rem;
+        }
+        #hero p {
+          font-size: 1.25rem;
+        }
+      }
+      header {
+        background-color: rgba(26, 32, 44, 0.8);
+        backdrop-filter: blur(8px);
+        box-shadow: 0 1px 2px 0 rgba(238, 234, 234, 0.05);
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        transition: background-color 0.3s ease;
+        color: #fff;
+      }
+      header.scrolled {
+        background-color: rgba(26, 32, 44, 0.7);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+          0 2px 4px -2px rgba(0, 0, 0, 0.1);
+      }
+      .btn-primary {
+        background-color: #16a34a;
+        color: #fff;
+        padding: 0.75rem 1.5rem;
+        border-radius: 9999px;
+        transition: background 0.2s, box-shadow 0.2s;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      }
+      .btn-primary:hover {
+        background-color: #16a34a;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      }
+      .btn-secondary {
+        background-color: #4a5568;
+        color: #fff;
+        padding: 0.75rem 1.5rem;
+        border-radius: 9999px;
+        border: 1px solid #4a5568;
+        transition: background 0.2s;
+      }
+      .btn-secondary:hover {
+        background-color: #2d3748;
+      }
+      .nav-link {
+        color: #a0aec0;
+        font-weight: 600;
+        transition: color 0.2s;
+      }
+      .nav-link:hover {
+        color: #fff;
+      }
+      .hero-bg {
+        background-image: url("pexels-cottonbro-8657287.jpg");
+        background-color: #1a202c;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+      }
+      .hero-bg::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: linear-gradient(to right, #1a202c, #2d3748, #1a202c);
+        opacity: 0.5;
+        z-index: 1;
+      }
+      .nav-dots {
+        position: fixed;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .nav-dot {
+        width: 10px;
+        height: 10px;
+        background-color: rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.3s;
+      }
+      .nav-dot.active {
+        background-color: #16a34a;
+        transform: scale(1.4);
+      }
+      @media (max-width: 768px) {
+        .hero-bg {
+          background-attachment: scroll;
+        }
+        .nav-dots {
+          right: 10px;
+        }
+      }
+      .modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background-color: rgba(0, 0, 0, 0.6);
+        justify-content: center;
+        align-items: center;
+        z-index: 50;
+      }
+      .modal.active {
+        display: flex;
+      }
+      .input-field {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #e2e8f0;
+        border-radius: 0.5rem;
+        outline: none;
+        transition: border 0.2s, box-shadow 0.2s;
+        color: #000;
+      }
+      .input-field:focus {
+        border-color: transparent;
+        box-shadow: 0 0 0 2px #16a34a;
+      }
+      .scroll-smooth {
+        scroll-behavior: smooth;
+      }
+      .bg-gray-900 {
+        background-color: #1a202c;
+      }
+      .bg-gray-800 {
+        background-color: #2d3748;
+      }
+      .text-green-400 {
+        color: #68d391;
+      }
+      .feature-tab {
+        padding: 10px 20px;
+        background-color: rgba(255, 255, 255, 0.15);
+        color: #fff;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
+      }
+      .feature-tab.active,
+      .feature-tab:hover {
+        background-color: #16a34a;
+      }
+      .absolute.inset-0 {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+      .bg-gradient {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to right, #1a202c, #16a34a, #1a202c);
+        opacity: 0.9;
+        z-index: -1;
+      }
+      img {
+        max-width: 100%;
+        height: auto;
+      }
+      @media (max-width: 768px) {
+        .flex-col.md\\:flex-row {
+          flex-direction: column;
+        }
+        .md\:w-1\/2 {
+          width: 100%;
+        }
+      }
+      .bg-overview {
+        background-image: url("rda.png");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        position: relative;
+      }
+      .bg-features {
+        background-image: url("pexels-martabranco-32210639.jpg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        position: relative;
+      }
+      .bg-Guides {
+        background-image: url("");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        position: relative;
+      }
+      .bg-Benefits {
+        background-image: url("");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        position: relative;
+      }
+      .bg-Advantages {
+        background-image: url("");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        position: relative;
+      }
+      .bg-Success {
+        background-image: url("6.png");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        position: relative;
+      }
+      .bg-Pricing {
+        background-image: url("pexels-yan-zhong-12392999.jpg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        position: relative;
+      }
+      .bg-Contact {
+        background-image: url("pexels-yan-zhong-12392999.jpg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        position: relative;
+      }
+    </style>
+  </head>
+  <body class="scroll-smooth">
+    <!-- Header -->
+    <header class="bg-gray-900 text-white sticky top-0 z-50 shadow-md">
+      <div
+        class="container mx-auto px-4 py-4 flex justify-between items-center"
+      >
+        <div class="flex items-center">
+          <img src="logo-MP-thuoc.webp" alt="ERADO Logo" class="h-12" />
+          <h1 class="text-3xl font-extrabold ml-3">ERADO</h1>
+        </div>
+        <nav class="hidden md:flex space-x-8">
+          <a href="#hero" class="nav-link" data-section="0">Trang chủ</a>
+          <a href="#overview" class="nav-link" data-section="1">Giới thiệu</a>
+          <a href="#features" class="nav-link" data-section="2">Tính năng</a>
+          <a href="#benefits" class="nav-link" data-section="3">Lợi ích</a>
+          <a href="#advantages" class="nav-link" data-section="4">Ưu điểm</a>
+          <a href="#success" class="nav-link" data-section="5">Thành công</a>
+          <a href="#pricing" class="nav-link" data-section="6">Gói dịch vụ</a>
+          <a href="#guides" class="nav-link" data-section="7">Hỗ trợ</a>
+          <a href="#contact" class="nav-link" data-section="8">Liên hệ</a>
+        </nav>
+        <div class="flex space-x-4">
+          <button
+            onclick="window.location.href='https://v1.era8.vn/login'"
+            class="btn-secondary"
+          >
+            Đăng nhập
+          </button>
+          <button onclick="openModal('signup')" class="btn-primary">
+            Đăng ký
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Navigation Dots -->
+    <div class="nav-dots">
+      <div class="nav-dot active" data-section="0"></div>
+      <div class="nav-dot" data-section="1"></div>
+      <div class="nav-dot" data-section="2"></div>
+      <div class="nav-dot" data-section="3"></div>
+      <div class="nav-dot" data-section="4"></div>
+      <div class="nav-dot" data-section="5"></div>
+      <div class="nav-dot" data-section="6"></div>
+      <div class="nav-dot" data-section="7"></div>
+      <div class="nav-dot" data-section="8"></div>
+    </div>
+
+    <!-- Fullpage Container -->
+    <div class="fullpage-container">
+      <!-- Hero Section -->
+      <section
+        id="hero"
+        class="fullpage-section hero-bg text-white text-center fade-in active"
+      >
+        <div
+          class="container mx-auto px-4 relative z-10 flex flex-col justify-center items-center h-full"
+        >
+          <h2
+            class="text-5xl md:text-6xl font-extrabold mb-6 max-w-4xl text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8); background-color: rgba(26, 32, 44, 0.7); padding: 0.5rem 1rem; border-radius: 0.5rem;"
+          >
+            ERADO - Giải pháp Quản lý Hiệu Thuốc Tối Ưu
+          </h2>
+          <p
+            class="text-xl md:text-2xl mb-8 max-w-3xl text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8); background-color: rgba(26, 32, 44, 0.7); padding: 0.5rem 1rem; border-radius: 0.5rem;"
+          >
+            Đưa nhà thuốc của bạn lên tầm cao mới với công nghệ quản lý hiện
+            đại, hiệu quả và thân thiện.
+          </p>
+          <a href="#contact" class="btn-primary text-lg" data-section="8"
+            >Bắt đầu dùng thử miễn phí</a
+          >
+        </div>
+      </section>
+
+      <!-- Overview Section -->
+      <section id="overview" class="fullpage-section bg-overview">
+        <div class="section-content">
+          <div
+            class="container mx-auto px-6 py-12 flex flex-col justify-center items-center h-full"
+          >
+            <h2
+              class="section-title text-4xl md:text-5xl font-extrabold mb-12 text-center text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-600"
+            >
+              Giới thiệu ERADO
+            </h2>
+            <div
+              class="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-6xl w-full fade-in"
+            >
+              <div
+                class="feature-card bg-gradient-to-br from-gray-800 to-gray-900 border-l-4 border-green-400 transform transition duration-300 hover:scale-105 hover:shadow-2xl"
+              >
+                <h3 class="text-2xl md:text-3xl font-bold text-green-300 mb-6">
+                  ERADO là gì?
+                </h3>
+                <p class="text-white leading-relaxed text-lg">
+                  ERADO là phần mềm quản lý nhà thuốc hiện đại, tích hợp đầy đủ
+                  tính năng từ bán hàng, quản lý tồn kho, cảnh báo hạn sử dụng
+                  đến hóa đơn điện tử và phân tích dữ liệu. Đạt chuẩn GPP, hỗ
+                  trợ liên thông Cục Quản lý Dược, giúp nhà thuốc vận hành hiệu
+                  quả, tiết kiệm chi phí và tuân thủ quy định ngành dược.
+                </p>
+              </div>
+              <div
+                class="feature-card bg-gradient-to-br from-gray-800 to-gray-900 border-l-4 border-green-400 transform transition duration-300 hover:scale-105 hover:shadow-2xl"
+              >
+                <h3 class="text-2xl md:text-3xl font-bold text-green-300 mb-6">
+                  Sứ mệnh & Tầm nhìn
+                </h3>
+                <p class="text-white leading-relaxed text-lg">
+                  <strong class="text-green-300">Sứ mệnh:</strong> Cung cấp giải
+                  pháp công nghệ giúp nhà thuốc vận hành hiệu quả và nâng cao
+                  trải nghiệm khách hàng.<br /><strong class="text-green-300"
+                    >Tầm nhìn:</strong
+                  >
+                  Trở thành phần mềm quản lý hiệu thuốc hàng đầu tại Việt Nam.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Features Section -->
+      <section id="features" class="fullpage-section bg-features relative">
+        <div class="container mx-auto px-4 relative z-10 py-16">
+          <h2 class="text-4xl font-bold text-center mb-12 text-white">
+            Tính năng nổi bật của ERADO
+          </h2>
+
+          <div class="mt-8">
+            <div class="mt-4 flex justify-center gap-4 mb-10">
+              <button
+                class="feature-tab active bg-green-600 text-white px-4 py-2 rounded"
+                data-feature="pos"
+              >
+                Quản lý bán hàng
+              </button>
+              <button
+                class="feature-tab bg-gray-300 px-4 py-2 rounded"
+                data-feature="inventory"
+              >
+                Quản lý tồn kho
+              </button>
+              <button
+                class="feature-tab bg-gray-300 px-4 py-2 rounded"
+                data-feature="expiration"
+              >
+                Hoá Đơn và Cảnh báo hết hạn
+              </button>
+            </div>
+
+            <div
+              id="feature-content"
+              class="flex flex-col md:flex-row items-center justify-between gap-8"
+            >
+              <!-- POS -->
+              <div class="feature-detail w-full md:w-1/2" data-feature="pos">
+                <h3 class="text-3xl font-semibold mb-4 text-white">
+                  Quản lý bán hàng (POS)
+                </h3>
+                <p class="text-white mb-6">
+                  Phần mềm quản lý nhà thuốc là một giải pháp công nghệ hiện
+                  đại, được thiết kế chuyên biệt để hỗ trợ các nhà thuốc trong
+                  việc vận hành hiệu quả và kiểm soát chặt chẽ mọi hoạt động
+                  liên quan đến bán hàng. Hệ thống cho phép tạo đơn hàng nhanh
+                  chóng, dễ dàng lựa chọn và thêm thuốc theo mã hoặc tên, đồng
+                  thời tích hợp chức năng in hóa đơn tức thì chỉ với vài thao
+                  tác đơn giản. Ngoài ra, phần mềm còn lưu trữ đầy đủ lịch sử
+                  giao dịch, giúp người dùng dễ dàng truy xuất lại các đơn hàng
+                  trước đó để kiểm tra, đối chiếu hoặc phục vụ khách hàng quay
+                  lại. Khả năng theo dõi doanh thu, lợi nhuận theo ngày, tháng
+                  hoặc khoảng thời gian tùy chọn giúp nhà thuốc đánh giá chính
+                  xác tình hình kinh doanh và lên kế hoạch phát triển phù hợp.
+                  Phần mềm được tối ưu về giao diện và hiệu năng, cho phép thao
+                  tác mượt mà, thân thiện với người dùng, giảm thiểu tối đa sai
+                  sót trong quá trình bán hàng. Nhờ tích hợp các công nghệ thông
+                  minh, phần mềm còn hỗ trợ đưa ra các báo cáo phân tích chi
+                  tiết, từ đó giúp chủ nhà thuốc đưa ra quyết định chính xác và
+                  kịp thời để nâng cao hiệu quả kinh doanh.
+                </p>
+                <div class="flex gap-4">
+                  <a href="#" class="btn-primary">Xem thêm →</a>
+                  <a href="#" class="btn-secondary">Tải báo cáo ↓</a>
+                </div>
+              </div>
+              <div class="feature-detail w-full md:w-1/2" data-feature="pos">
+                <img
+                  src="pexels-karolina-grabowska-6627897.jpg"
+                  alt="POS Feature"
+                  class="rounded-lg shadow-lg w-full h-auto"
+                />
+              </div>
+
+              <!-- Inventory -->
+              <div
+                class="feature-detail w-full md:w-1/2 hidden"
+                data-feature="inventory"
+              >
+                <h3 class="text-3xl font-semibold mb-4 text-white">
+                  Quản lý tồn kho
+                </h3>
+                <p class="text-white mb-6">
+                  Hệ thống được tích hợp tính năng quản lý tồn kho tiên tiến,
+                  giúp nhà thuốc theo dõi chính xác số lượng thuốc hiện có theo
+                  thời gian thực. Mỗi khi có giao dịch bán hàng hoặc nhập hàng,
+                  phần mềm sẽ tự động cập nhật số lượng trong kho, đảm bảo dữ
+                  liệu luôn đồng bộ và minh bạch. Đặc biệt, hệ thống có khả năng
+                  kiểm tra và cảnh báo khi số lượng thuốc giảm xuống dưới mức
+                  tồn kho tối thiểu, giúp nhà thuốc chủ động lên kế hoạch nhập
+                  hàng, tránh tình trạng thiếu thuốc, gián đoạn kinh doanh. Việc
+                  tự động hóa quy trình nhập – xuất kho không chỉ giảm gánh nặng
+                  công việc thủ công mà còn hạn chế sai sót và thất thoát hàng
+                  hóa do nhầm lẫn hoặc thao tác sai. Bên cạnh đó, phần mềm còn
+                  hỗ trợ tối ưu hóa không gian lưu trữ thông qua việc phân loại
+                  thuốc theo nhóm, hạn sử dụng, hoặc vị trí trong kho, giúp việc
+                  tìm kiếm và sắp xếp trở nên dễ dàng hơn. Nhờ đó, nhà thuốc
+                  không chỉ tiết kiệm được thời gian mà còn nâng cao hiệu quả
+                  quản lý kho và đảm bảo chất lượng dịch vụ cung cấp đến tay
+                  khách hàng.
+                </p>
+                <div class="flex gap-4">
+                  <a href="#" class="btn-primary">Xem thêm →</a>
+                  <a href="#" class="btn-secondary">Tải báo cáo ↓</a>
+                </div>
+              </div>
+              <div
+                class="feature-detail w-full md:w-1/2 hidden"
+                data-feature="inventory"
+              >
+                <img
+                  src="13.png"
+                  alt="Inventory Feature"
+                  class="rounded-lg shadow-lg w-full h-auto"
+                />
+              </div>
+
+              <!-- Expiration -->
+              <div
+                class="feature-detail w-full md:w-1/2 hidden"
+                data-feature="expiration"
+              >
+                <h3 class="text-3xl font-semibold mb-4 text-white">
+                  Hoá Đơn và Cảnh báo hết hạn
+                </h3>
+                <p class="text-white mb-6">
+                  Phần mềm không chỉ hỗ trợ in hóa đơn giấy nhanh chóng, rõ ràng
+                  mà còn tích hợp chức năng xuất hóa đơn điện tử theo đúng quy
+                  chuẩn của Tổng cục Thuế. Mỗi giao dịch bán hàng được xử lý đều
+                  có thể chuyển đổi thành hóa đơn điện tử hợp lệ, giúp nhà thuốc
+                  dễ dàng kê khai thuế, minh bạch tài chính và giảm thiểu rủi ro
+                  trong công tác quản lý sổ sách. Bên cạnh đó, phần mềm liên tục
+                  theo dõi hạn sử dụng của từng lô thuốc và tự động gửi cảnh báo
+                  khi sản phẩm sắp đến hạn. Điều này giúp nhà thuốc kịp thời xử
+                  lý, tránh tình trạng thuốc quá hạn được lưu hành hoặc bán ra
+                  ngoài thị trường. Thông báo có thể được hiển thị trực tiếp
+                  trên giao diện hệ thống hoặc gửi qua email, tin nhắn đến quản
+                  lý. Tính năng này không chỉ đảm bảo an toàn tuyệt đối cho
+                  khách hàng mà còn giúp nhà thuốc tuân thủ nghiêm ngặt các quy
+                  định trong lĩnh vực dược phẩm. Ngoài ra, phần mềm còn hỗ trợ
+                  thống kê thuốc sắp hết hạn theo ngày, nhóm thuốc hoặc nhà cung
+                  cấp, giúp tối ưu hóa quản lý tồn kho và luân chuyển hàng hóa
+                  hiệu quả hơn.
+                </p>
+                <div class="flex gap-4">
+                  <a href="#" class="btn-primary">Xem thêm →</a>
+                  <a href="#" class="btn-secondary">Tải báo cáo ↓</a>
+                </div>
+              </div>
+              <div
+                class="feature-detail w-full md:w-1/2 hidden"
+                data-feature="expiration"
+              >
+                <img
+                  src="3.png"
+                  alt="Expiration Feature"
+                  class="rounded-lg shadow-lg w-full h-auto"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Background Gradient -->
+        <div class="absolute inset-0 z-0">
+          <div
+            class="absolute inset-0 bg-gradient-to-r from-gray-900 via-green-900 to-gray-900 opacity-90"
+          ></div>
+        </div>
+
+        <!-- Script -->
+        <script>
+          const tabs = document.querySelectorAll(".feature-tab");
+          const features = document.querySelectorAll(".feature-detail");
+
+          tabs.forEach((tab) => {
+            tab.addEventListener("click", () => {
+              // Active tab style
+              tabs.forEach((t) => {
+                t.classList.remove("active", "bg-green-600", "text-white");
+                t.classList.add("bg-gray-300");
+              });
+              tab.classList.add("active", "bg-green-600", "text-white");
+              tab.classList.remove("bg-gray-300");
+
+              const feature = tab.getAttribute("data-feature");
+
+              features.forEach((f) => {
+                f.classList.toggle(
+                  "hidden",
+                  f.getAttribute("data-feature") !== feature
+                );
+              });
+            });
+          });
+        </script>
+      </section>
+      <section id="benefits" class="fullpage-section bg-Benefits">
+        <div class="section-content">
+          <div
+            class="container mx-auto px-6 py-16 flex flex-col justify-center items-center h-full"
+          >
+            <h2
+              class="section-title text-3xl md:text-4xl font-extrabold mb-16 text-center text-white bg-gradient-to-r from-green-400 to-emerald-600 bg-clip-text"
+            >
+              Lợi ích mang lại
+            </h2>
+            <div
+              class="flex flex-col md:flex-row justify-around items-start gap-12 fade-in w-full max-w-7xl"
+            >
+              <div
+                class="feature-card bg-gradient-to-br from-gray-800/80 to-gray-900/80 border-l-4 border-green-500 p-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 w-full md:w-1/3"
+              >
+                <i class="fas fa-rocket text-green-500 text-5xl mb-6"></i>
+                <h3
+                  class="text-xl md:text-2xl font-semibold text-green-300 mb-4"
+                >
+                  Hiệu suất vượt trội
+                </h3>
+                <p class="text-gray-200 text-base leading-relaxed">
+                  Tăng tốc độ bán hàng và giảm sai sót với quy trình tự động
+                  hóa.
+                </p>
+              </div>
+              <div
+                class="feature-card bg-gradient-to-br from-gray-800/80 to-gray-900/80 border-l-4 border-green-500 p-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 w-full md:w-1/3"
+              >
+                <i class="fas fa-clock text-green-500 text-5xl mb-6"></i>
+                <h3
+                  class="text-xl md:text-2xl font-semibold text-green-300 mb-4"
+                >
+                  Tiết kiệm thời gian
+                </h3>
+                <p class="text-gray-200 text-base leading-relaxed">
+                  Quản lý tồn kho và báo cáo tự động, tiết kiệm hàng giờ làm
+                  việc.
+                </p>
+              </div>
+              <div
+                class="feature-card bg-gradient-to-br from-gray-800/80 to-gray-900/80 border-l-4 border-green-500 p-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 w-full md:w-1/3"
+              >
+                <i class="fas fa-heart text-green-500 text-5xl mb-6"></i>
+                <h3
+                  class="text-xl md:text-2xl font-semibold text-green-300 mb-4"
+                >
+                  Trải nghiệm khách hàng
+                </h3>
+                <p class="text-gray-200 text-base leading-relaxed">
+                  Dịch vụ chuyên nghiệp, tăng sự hài lòng và trung thành của
+                  khách hàng.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section id="advantages" class="fullpage-section bg-Advantages">
+        <div class="section-content">
+          <div
+            class="container mx-auto px-6 py-16 flex flex-col justify-center items-center h-full"
+          >
+            <h2
+              class="section-title text-3xl md:text-4xl font-extrabold mb-16 text-center text-white bg-gradient-to-r from-gray-500 to-gray-700 bg-clip-text"
+            >
+              Ưu điểm vượt trội
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-10 fade-in">
+              <div
+                class="feature-card bg-gray-700/70 text-center p-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
+              >
+                <i class="fas fa-desktop text-green-400 text-5xl mb-6"></i>
+                <h3
+                  class="text-lg md:text-xl font-semibold text-green-300 mb-4"
+                >
+                  Giao diện thân thiện
+                </h3>
+                <p class="text-gray-200 text-base leading-relaxed">
+                  Dễ sử dụng, phù hợp với mọi người dùng.
+                </p>
+              </div>
+              <div
+                class="feature-card bg-gray-700/70 text-center p-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
+              >
+                <i class="fas fa-bolt text-green-400 text-5xl mb-6"></i>
+                <h3
+                  class="text-lg md:text-xl font-semibold text-green-300 mb-4"
+                >
+                  Hiệu suất cao
+                </h3>
+                <p class="text-gray-200 text-base leading-relaxed">
+                  Xử lý nhanh, vận hành ổn định.
+                </p>
+              </div>
+              <div
+                class="feature-card bg-gray-700/70 text-center p-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
+              >
+                <i class="fas fa-headset text-green-400 text-5xl mb-6"></i>
+                <h3
+                  class="text-lg md:text-xl font-semibold text-green-300 mb-4"
+                >
+                  Hỗ trợ 24/7
+                </h3>
+                <p class="text-gray-200 text-base leading-relaxed">
+                  Đội ngũ hỗ trợ luôn sẵn sàng.
+                </p>
+              </div>
+              <div
+                class="feature-card bg-gray-700/70 text-center p-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
+              >
+                <i class="fas fa-sync-alt text-green-400 text-5xl mb-6"></i>
+                <h3
+                  class="text-lg md:text-xl font-semibold text-green-300 mb-4"
+                >
+                  Cập nhật thường xuyên
+                </h3>
+                <p class="text-gray-200 text-base leading-relaxed">
+                  Tuân thủ quy định Bộ Y Tế.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Success Stories Section -->
+      <section id="success" class="fullpage-section bg-Success">
+        <div class="container mx-auto px-4 flex flex-col justify-center h-full">
+          <h2 class="section-title">Câu chuyện thành công</h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8 fade-in">
+            <div class="feature-card bg-gray-800 rounded-xl p-6 shadow-lg">
+              <h3 class="text-xl font-semibold text-green-400 mb-4">
+                Hiệu thuốc Minh Tâm
+              </h3>
+              <p class="text-white text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8)">
+                Tăng 30% hiệu suất bán hàng sau 3 tháng sử dụng ERADO.
+              </p>
+            </div>
+            <div class="feature-card bg-gray-800 rounded-xl p-6 shadow-lg">
+              <h3 class="text-xl font-semibold text-green-400 mb-4">
+                Hiệu thuốc An Khang
+              </h3>
+              <p class="text-white text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8)">
+                Giảm 50% thời gian kiểm kê nhờ tự động hóa.
+              </p>
+            </div>
+            <div class="feature-card bg-gray-800 rounded-xl p-6 shadow-lg">
+              <h3 class="text-xl font-semibold text-green-400 mb-4">
+                Hiệu thuốc Hòa Bình
+              </h3>
+              <p class="text-white text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8)">
+                Nâng cao trải nghiệm khách hàng với quản lý đơn thuốc.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Pricing Section -->
+      <section id="pricing" class="fullpage-section bg-Pricing">
+        <div class="container mx-auto px-4 flex flex-col justify-center h-full">
+          <h2 class="section-title">Gói dịch vụ</h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8 fade-in">
+            <div class="feature-card">
+              <h3 class="text-2xl font-bold text-green-400 mb-4">Gói Cơ bản</h3>
+              <p
+                class="text-white mb-4 text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8)"
+              >
+                Dành cho nhà thuốc nhỏ, bao gồm POS và quản lý tồn kho cơ bản.
+              </p>
+              <p
+                class="text-lg font-bold text-white text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8)"
+              >
+                Liên hệ để biết giá
+              </p>
+              <a
+                href="#contact"
+                class="btn-primary mt-6 inline-block"
+                data-section="8"
+                >Tìm hiểu thêm</a
+              >
+            </div>
+            <div class="feature-card border-2 border-green-400 relative">
+              <span
+                class="absolute top-0 right-0 bg-green-400 text-white text-xs font-bold px-3 py-1 rounded-bl-lg"
+                >Phổ biến</span
+              >
+              <h3 class="text-2xl font-bold text-green-400 mb-4">
+                Gói Nâng cao
+              </h3>
+              <p
+                class="text-white mb-4 text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8)"
+              >
+                Thêm quản lý công nợ, báo cáo chi tiết, phù hợp nhà thuốc vừa.
+              </p>
+              <p
+                class="text-lg font-bold text-white text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8)"
+              >
+                Liên hệ để biết giá
+              </p>
+              <a
+                href="#contact"
+                class="btn-primary mt-6 inline-block"
+                data-section="8"
+                >Tìm hiểu thêm</a
+              >
+            </div>
+            <div class="feature-card">
+              <h3 class="text-2xl font-bold text-green-400 mb-4">
+                Gói Doanh nghiệp
+              </h3>
+              <p
+                class="text-white mb-4 text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8)"
+              >
+                Đầy đủ tính năng, quản lý từ xa, phân quyền nhân sự.
+              </p>
+              <p
+                class="text-lg font-bold text-white text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8)"
+              >
+                Liên hệ để biết giá
+              </p>
+              <a
+                href="#contact"
+                class="btn-primary mt-6 inline-block"
+                data-section="8"
+                >Tìm hiểu thêm</a
+              >
+            </div>
+          </div>
+          <p
+            class="mt-12 text-center text-white text-lg text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8)"
+          >
+            Dùng thử miễn phí 14 ngày với đầy đủ tính năng.
+            <a
+              href="#contact"
+              class="text-green-400 font-semibold"
+              data-section="8"
+              >Liên hệ ngay</a
+            >.
+          </p>
+        </div>
+      </section>
+
+      <!-- Guides and Training Section -->
+      <section id="guides" class="fullpage-section bg-Guides">
+        <div class="container mx-auto px-4 flex flex-col justify-center h-full">
+          <h2 class="section-title">Hỗ trợ & Đào tạo</h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8 fade-in">
+            <div class="feature-card">
+              <i class="fas fa-video text-green-400 text-4xl mb-4"></i>
+              <h3 class="text-xl font-semibold text-green-400 mb-4">
+                Video demo
+              </h3>
+              <p class="text-white text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8)">
+                Khám phá tính năng ERADO qua video hướng dẫn chi tiết.
+              </p>
+            </div>
+            <div class="feature-card">
+              <i class="fas fa-book text-green-400 text-4xl mb-4"></i>
+              <h3 class="text-xl font-semibold text-green-400 mb-4">
+                Tài liệu hướng dẫn
+              </h3>
+              <p class="text-white text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8)">
+                Tài liệu dễ hiểu, hỗ trợ sử dụng phần mềm hiệu quả.
+              </p>
+            </div>
+            <div class="feature-card">
+              <i
+                class="fas fa-chalkboard-teacher text-green-400 text-4xl mb-4"
+              ></i>
+              <h3 class="text-xl font-semibold text-green-400 mb-4">
+                Đào tạo chuyên sâu
+              </h3>
+              <p class="text-white text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8)">
+                Hỗ trợ đào tạo trực tiếp hoặc online cho nhân viên.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact Section -->
+      <section id="contact" class="fullpage-section bg-Contact">
+        <div class="container mx-auto px-4 flex flex-col justify-center h-full">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-12 fade-in">
+            <div>
+              <h3 class="text-2xl font-bold text-green-400 mb-4">
+                Thông tin liên hệ
+              </h3>
+              <p
+                class="text-white leading-relaxed text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8)"
+              >
+                <strong>CÔNG TY TNHH ERA MEDICAL</strong><br />
+                <strong>Địa chỉ:</strong> Tầng 1 - Khu TMDV nhà D16 - KĐT Đặng
+                Xá, tổ dân phố số 1, Xã Đặng Xá, Huyện Gia Lâm, Thành phố Hà
+                Nội<br />
+                <strong>Hotline:</strong> 0793033868<br />
+                <strong>Email:</strong> support@erado.vn<br />
+                <strong>Website:</strong>
+                <a href="https://www.erado.vn" class="text-green-400"
+                  >www.erado.vn</a
+                >
+              </p>
+              <p
+                class="mt-4 text-white text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8)"
+              >
+                Hỗ trợ kỹ thuật & bảo trì:
+                <span class="font-semibold">24/7</span>
+              </p>
+              <a href="#" class="btn-primary mt-6 inline-block"
+                >Đăng ký dùng thử</a
+              >
+            </div>
+            <div>
+              <h3 class="text-2xl font-bold text-green-400 mb-4">
+                Gửi yêu cầu của bạn
+              </h3>
+              <div class="space-y-4">
+                <input
+                  type="text"
+                  placeholder="Họ và tên"
+                  class="input-field"
+                />
+                <input type="email" placeholder="Email" class="input-field" />
+                <textarea
+                  placeholder="Nội dung yêu cầu"
+                  class="input-field h-32 resize-none"
+                ></textarea>
+                <button class="btn-primary">Gửi yêu cầu</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+      <div class="bg-white p-8 rounded-lg max-w-md w-full">
+        <h2 class="text-2xl font-bold text-green-600 mb-4">Đăng nhập</h2>
+        <div class="space-y-4">
+          <input type="email" placeholder="Email" class="input-field" />
+          <input type="password" placeholder="Mật khẩu" class="input-field" />
+          <button
+            onclick="alert('Chức năng đang phát triển')"
+            class="btn-primary w-full"
+          >
+            Đăng nhập
+          </button>
+          <p class="text-center text-gray-600">
+            Chưa có tài khoản?
+            <a href="#" onclick="switchModal('signup')" class="text-green-600"
+              >Đăng ký</a
+            >
+          </p>
+        </div>
+        <button onclick="closeModal()" class="mt-4 text-gray-600">Đóng</button>
+      </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div id="signupModal" class="modal">
+      <div class="bg-white p-8 rounded-lg max-w-md w-full">
+        <h2 class="text-2xl font-bold text-green-600 mb-4">Đăng ký</h2>
+        <div class="space-y-4">
+          <input type="text" placeholder="Họ và tên" class="input-field" />
+          <input type="email" placeholder="Email" class="input-field" />
+          <input type="password" placeholder="Mật khẩu" class="input-field" />
+          <button
+            onclick="alert('Chức năng đang phát triển')"
+            class="btn-primary w-full"
+          >
+            Đăng ký
+          </button>
+          <p class="text-center text-gray-600">
+            Đã có tài khoản?
+            <a href="#" onclick="switchModal('login')" class="text-green-600"
+              >Đăng nhập</a
+            >
+          </p>
+        </div>
+        <button onclick="closeModal()" class="mt-4 text-gray-600">Đóng</button>
+      </div>
+    </div>
+    <button id="chatbotBtn" class="chatbot-btn" onclick="openChatbot()">
+      <i class="fas fa-comment-dots"></i>
+    </button>
+    <!-- Chatbot Modal (hidden by default) -->
+    <div id="chatbotModal" class="modal">
+      <div class="bg-white p-6 rounded-lg max-w-sm w-full relative">
+        <button
+          onclick="closeChatbot()"
+          class="absolute top-2 right-2 text-gray-600"
+        >
+          &times;
+        </button>
+        <h3 class="text-lg font-bold mb-2 text-green-600">Chatbot hỗ trợ</h3>
+        <div class="mb-4 text-gray-700">Xin chào! Bạn cần hỗ trợ gì?</div>
+        <!-- You can embed your chatbot iframe or widget here -->
+        <input type="text" class="input-field" placeholder="Nhập câu hỏi..." />
+        <button class="btn-primary mt-2 w-full">Gửi</button>
+      </div>
+    </div>
+
+    <style>
+      .chatbot-btn {
+        position: fixed;
+        bottom: 32px;
+        right: 32px;
+        z-index: 200;
+        background: #16a34a;
+        color: #fff;
+        border: none;
+        border-radius: 50%;
+        width: 56px;
+        height: 56px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        font-size: 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      .chatbot-btn:hover {
+        background: #15803d;
+      }
+    </style>
+    <script>
+      function openChatbot() {
+        document.getElementById("chatbotModal").classList.add("active");
+      }
+      function closeChatbot() {
+        document.getElementById("chatbotModal").classList.remove("active");
+      }
+    </script>
+    <script>
+      document.querySelectorAll(".feature-tab").forEach((tab) => {
+        tab.addEventListener("click", () => {
+          document
+            .querySelectorAll(".feature-tab")
+            .forEach((t) => t.classList.remove("active"));
+          tab.classList.add("active");
+          const feature = tab.getAttribute("data-feature");
+          let title, description;
+          switch (feature) {
+            case "pos":
+              title = "Quản lý bán hàng (POS)";
+              description =
+                "Một giải pháp tiên tiến giúp nhà thuốc quản lý bán hàng nhanh chóng, in hóa đơn tiện lợi với giao diện thân thiện, tối ưu hóa quy trình kinh doanh.";
+              break;
+            case "inventory":
+              title = "Quản lý tồn kho";
+              description =
+                "Giải pháp theo dõi nhập xuất thuốc chính xác, đảm bảo tồn kho luôn cập nhật theo thời gian thực.";
+              break;
+            case "expiration":
+              title = "Cảnh báo hết hạn";
+              description =
+                "Tự động cảnh báo thuốc sắp hết hạn để kịp thời xử lý và tránh lãng phí.";
+              break;
+          }
+          document.querySelector("h3").textContent = title;
+          document.querySelector("p").textContent = description;
+        });
+      });
+      const sections = document.querySelectorAll(".fullpage-section");
+      const navDots = document.querySelectorAll(".nav-dot");
+      const navLinks = document.querySelectorAll("[data-section]");
+      const fullpageContainer = document.querySelector(".fullpage-container");
+      let currentIndex = 0;
+      let isScrolling = false;
+
+      function updateSection(index) {
+        if (index < 0 || index >= sections.length) return;
+        fullpageContainer.style.transform = `translateY(-${index * 100}vh)`;
+        navDots.forEach((dot) => dot.classList.remove("active"));
+        navDots[index].classList.add("active");
+        sections.forEach((section) => section.classList.remove("active"));
+        sections[index].classList.add("active");
+        currentIndex = index;
+        history.replaceState(null, null, `#${sections[index].id}`);
+      }
+
+      function scrollToSection(index, immediate = false) {
+        if (index < 0 || index >= sections.length || isScrolling) return;
+        isScrolling = true;
+        updateSection(index);
+        setTimeout(
+          () => {
+            isScrolling = false;
+          },
+          immediate ? 0 : 800
+        );
+      }
+
+      function throttle(func, limit) {
+        let inThrottle;
+        return function (...args) {
+          if (!inThrottle) {
+            func.apply(this, args);
+            inThrottle = true;
+            setTimeout(() => (inThrottle = false), limit);
+          }
+        };
+      }
+
+      let lastScrollTime = 0;
+      let accumulatedDeltaY = 0;
+      let scrollLock = false;
+      const scrollThreshold = 150;
+      const scrollCooldown = 1300;
+
+      window.addEventListener(
+        "wheel",
+        (e) => {
+          if (scrollLock || isScrolling) return;
+          accumulatedDeltaY += e.deltaY;
+          if (Math.abs(accumulatedDeltaY) > scrollThreshold) {
+            if (accumulatedDeltaY > 0 && currentIndex < sections.length - 1) {
+              scrollToSection(currentIndex + 1);
+            } else if (accumulatedDeltaY < 0 && currentIndex > 0) {
+              scrollToSection(currentIndex - 1);
+            }
+            scrollLock = true;
+            accumulatedDeltaY = 0;
+            setTimeout(() => {
+              scrollLock = false;
+            }, scrollCooldown);
+          }
+        },
+        { passive: true }
+      );
+
+      let touchStartY = 0;
+      window.addEventListener(
+        "touchstart",
+        (e) => {
+          touchStartY = e.touches[0].clientY;
+        },
+        { passive: true }
+      );
+      window.addEventListener(
+        "touchmove",
+        throttle((e) => {
+          e.preventDefault();
+          if (isScrolling) return;
+          const touchCurrentY = e.touches[0].clientY;
+          const delta = touchStartY - touchCurrentY;
+          if (delta > 10 && currentIndex < sections.length - 1) {
+            scrollToSection(currentIndex + 1);
+          } else if (delta < -10 && currentIndex > 0) {
+            scrollToSection(currentIndex - 1);
+          }
+          touchStartY = touchCurrentY;
+        }, 800),
+        { passive: false }
+      );
+
+      window.addEventListener("keydown", (e) => {
+        if (isScrolling) return;
+        if (e.key === "ArrowDown" && currentIndex < sections.length - 1) {
+          scrollToSection(currentIndex + 1);
+        } else if (e.key === "ArrowUp" && currentIndex > 0) {
+          scrollToSection(currentIndex - 1);
+        }
+      });
+
+      navDots.forEach((dot, index) => {
+        dot.addEventListener("click", () => scrollToSection(index));
+      });
+
+      navLinks.forEach((link) => {
+        link.addEventListener("click", (e) => {
+          e.preventDefault();
+          const index = parseInt(link.getAttribute("data-section"));
+          scrollToSection(index);
+        });
+      });
+
+      function openModal(type) {
+        const modal = document.getElementById(`${type}Modal`);
+        if (modal) modal.classList.add("active");
+      }
+
+      function closeModal() {
+        document
+          .querySelectorAll(".modal")
+          .forEach((modal) => modal.classList.remove("active"));
+      }
+
+      function switchModal(type) {
+        closeModal();
+        setTimeout(() => openModal(type), 300);
+      }
+
+      // Đảm bảo quay về section 0 khi tải lại trang
+      window.addEventListener("load", () => {
+        currentIndex = 0;
+        scrollToSection(0, true);
+        window.location.hash = ""; // Xóa hash để tránh giữ section hiện tại
+      });
+
+      // Ngăn hash ảnh hưởng khi tải lại
+      window.addEventListener("hashchange", () => {
+        currentIndex = 0;
+        scrollToSection(0, true);
+        window.location.hash = ""; // Bỏ qua bất kỳ hash nào
+      });
+    </script>
+  </body>
+</html>
